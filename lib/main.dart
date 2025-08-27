@@ -255,19 +255,19 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
               );
             }),
             const SizedBox(height: 14),
-            Text(
+            const Text(
               'Data Scientist · AI Architect · Gen AI Expert',
-              style: const TextStyle(fontSize: 18, height: 1.4, color: Colors.white70),
+              style: TextStyle(fontSize: 18, height: 1.4, color: Colors.white70),
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'Strategic Data Leader | 22+ yrs in BI, AI/ML & Cloud Data Engineering | Driving business impact with Agentic AI & Generative AI | Delivered \$15M+ value via predictive analytics',
-              style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.white70),
+              style: TextStyle(fontSize: 16, height: 1.4, color: Colors.white70),
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'Turning Data into Direction, Insights into Impact',
-              style: const TextStyle(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400, color: Colors.white70, fontStyle: FontStyle.italic),
+              style: TextStyle(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400, color: Colors.white70, fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 16),
             Wrap(
@@ -446,9 +446,9 @@ class ProjectCard extends StatelessWidget {
               const SizedBox(height: 8),
         Expanded(child: Text(project.description, style: const TextStyle(color: Colors.white70))),
               const SizedBox(height: 8),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
+                children: [
           Icon(Icons.open_in_new, size: 16, color: Colors.white70),
                 ],
               )
@@ -486,7 +486,7 @@ class _ContactSectionState extends State<ContactSection> {
   void _sendMail() {
     if (!_formKey.currentState!.validate()) return;
 
-    final to = emailAddress;
+    const to = emailAddress;
     final subject = Uri.encodeComponent(_subjectCtrl.text);
     final bodyText = 'Name: ${_nameCtrl.text}\nEmail: ${_emailCtrl.text}\n\n${_messageCtrl.text}';
     final body = Uri.encodeComponent(bodyText);
@@ -510,7 +510,7 @@ class _ContactSectionState extends State<ContactSection> {
           TextButton.icon(
             onPressed: () => html.window.open('mailto:$emailAddress', '_self'),
             icon: const Icon(Icons.email, color: Colors.white70),
-            label: Text(emailAddress, style: const TextStyle(color: Colors.white70)),
+            label: const Text(emailAddress, style: TextStyle(color: Colors.white70)),
           ),
           const SizedBox(height: 12),
           Form(
@@ -609,13 +609,13 @@ class AboutSection extends StatelessWidget {
               Text('About Me', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white)),
               const SizedBox(height: 14),
               // Lead bold summary (slightly larger, tighter line-height)
-              Text(
+              const Text(
                 'Dynamic and results-driven Sr. Manager – Data & Analytics / Data Science with 22+ years of experience delivering actionable insights, enterprise-scale analytics, and strategic guidance across multi-disciplinary teams.',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16, height: 1.34),
               ),
               const SizedBox(height: 16),
               // Proven expertise heading
-              Text('Proven expertise in:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+              const Text('Proven expertise in:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
               const SizedBox(height: 10),
               // Bulleted list
               Column(
@@ -631,38 +631,38 @@ class AboutSection extends StatelessWidget {
               const SizedBox(height: 18),
               // Paragraph emphasizing data science experience
               RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: const TextSpan(
+                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    const TextSpan(text: 'In addition to analytics, I bring extensive hands-on experience in '),
-                    TextSpan(text: 'Data Science and AI/ML practices', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    const TextSpan(text: ', having delivered impactful AI projects in predictive modeling, NLP, computer vision, and intelligent automation. My work includes building AI-powered solutions that improve forecasting accuracy, enhance operational efficiency, and unlock new revenue opportunities.'),
+                    TextSpan(text: 'In addition to analytics, I bring extensive hands-on experience in '),
+                    TextSpan(text: 'Data Science and AI/ML practices', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    TextSpan(text: ', having delivered impactful AI projects in predictive modeling, NLP, computer vision, and intelligent automation. My work includes building AI-powered solutions that improve forecasting accuracy, enhance operational efficiency, and unlock new revenue opportunities.'),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
               // Agentic AI and Generative AI paragraph
               RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: const TextSpan(
+                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    const TextSpan(text: 'Recently, my focus has extended to '),
-                    TextSpan(text: 'Agentic AI systems', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    const TextSpan(text: '—autonomous AI agents that optimize workflows and augment human decision-making—and '),
-                    TextSpan(text: 'Generative AI innovations', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    const TextSpan(text: ', where I actively explore applications in text, image, and code generation to transform business processes and accelerate innovation.'),
+                    TextSpan(text: 'Recently, my focus has extended to '),
+                    TextSpan(text: 'Agentic AI systems', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    TextSpan(text: '—autonomous AI agents that optimize workflows and augment human decision-making—and '),
+                    TextSpan(text: 'Generative AI innovations', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    TextSpan(text: ', where I actively explore applications in text, image, and code generation to transform business processes and accelerate innovation.'),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
               // Closing passionate line
               RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: const TextSpan(
+                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    const TextSpan(text: 'I am passionate about '),
-                    TextSpan(text: 'bridging traditional analytics with advanced AI capabilities', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    const TextSpan(text: ', continuously exploring how AI and GenAI can elevate user experience, streamline operations, and deliver measurable business impact.'),
+                    TextSpan(text: 'I am passionate about '),
+                    TextSpan(text: 'bridging traditional analytics with advanced AI capabilities', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    TextSpan(text: ', continuously exploring how AI and GenAI can elevate user experience, streamline operations, and deliver measurable business impact.'),
                   ],
                 ),
               ),
@@ -736,7 +736,7 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
   void _initializePositions() {
     final ctx = _key.currentContext;
     if (ctx == null) return;
-    final size = ctx.size ?? Size(800, 320);
+    final size = ctx.size ?? const Size(800, 320);
     final w = size.width;
     final h = size.height;
     _positions.clear();
@@ -751,7 +751,7 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
 
   void _relaxPositions(double w, double h, {int iterations = 40}) {
     final n = _positions.length;
-    final minDist = 70.0; // desired min pixel distance
+    const minDist = 70.0; // desired min pixel distance
     for (var it = 0; it < iterations; it++) {
       final forces = List.generate(n, (_) => Offset.zero);
       for (var i = 0; i < n; i++) {
@@ -782,14 +782,14 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    final height = 320.0;
+    const height = 320.0;
     return SizedBox(
       width: double.infinity,
       height: height,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1000),
-          child: Container(
+          child: SizedBox(
             key: _key,
             height: height,
             child: Stack(
