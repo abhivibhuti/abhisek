@@ -65,7 +65,7 @@ class PortfolioHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Name'),
+        title: const Text('Abhisek Vibhuti | Portfolio'),
         actions: [
           TextButton(
             onPressed: () => _scrollTo(context, 0),
@@ -180,7 +180,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
             }),
             const SizedBox(height: 12),
             Text(
-              'Sr. Manager Data Science & Analytics | AI Architect | Generative AI | Agentic AI',
+              'Data Scientist · AI Architect · Gen AI Expert',
               style: const TextStyle(fontSize: 16, height: 1.5, color: Colors.black87),
             ),
             const SizedBox(height: 16),
