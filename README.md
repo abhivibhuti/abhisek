@@ -18,3 +18,5 @@ flutter run -d chrome
 Notes:
 - Replace the placeholder text and image URL in `lib/main.dart` with your own content.
 - This project requires Flutter SDK installed and configured for web (stable channel). See https://flutter.dev for setup instructions.
+
+I have updated the code - 27-08-2025
