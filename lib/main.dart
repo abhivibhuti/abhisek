@@ -26,7 +26,7 @@ class PortfolioApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF7C3AED),
           primary: const Color(0xFF7C3AED),
-          background: const Color(0xFFF8FAFC),
+          surface: const Color(0xFFF8FAFC),
         ),
         scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         textTheme: GoogleFonts.interTextTheme(
@@ -127,11 +127,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
     );
   }
 
-  void _scrollToContact() {
-    // simple behaviour: ensure projects visible and then scroll to bottom by focusing the contact section
-    setState(() => _showProjects = true);
-    // For a more accurate scroll-to behavior, we could add GlobalKeys and a ScrollController.
-  }
+  // (Removed unused helper _scrollToContact)
 }
 
 class HeroSection extends StatefulWidget {
@@ -141,14 +137,12 @@ class HeroSection extends StatefulWidget {
   State<HeroSection> createState() => _HeroSectionState();
 }
 
-class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin {
+class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
   late final Animation<Offset> _avatarOffset;
   late final Animation<Offset> _textOffset;
   late final Animation<double> _avatarOpacity;
   late final Animation<double> _textOpacity;
-  late final Animation<double> _avatarScale;
-  late final AnimationController _ringCtrl;
   bool _avatarHover = false;
 
   @override
@@ -159,16 +153,12 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
     _textOffset = Tween(begin: const Offset(0, 0.28), end: Offset.zero).animate(CurvedAnimation(parent: _ctrl, curve: const Interval(0.2, 1.0, curve: Curves.easeOut)));
     _avatarOpacity = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: const Interval(0.0, 0.5)));
     _textOpacity = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: const Interval(0.2, 1.0)));
-  _avatarScale = Tween(begin: 0.92, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack)));
-  _ringCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 6));
-    _ctrl.forward();
-  _ringCtrl.repeat();
+  _ctrl.forward();
   }
 
   @override
   void dispose() {
     _ctrl.dispose();
-  _ringCtrl.dispose();
     super.dispose();
   }
 
@@ -265,28 +255,18 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
           onEnter: (_) => setState(() => _avatarHover = true),
           onExit: (_) => setState(() => _avatarHover = false),
           cursor: SystemMouseCursors.click,
-          child: ScaleTransition(
-            scale: _avatarScale,
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 1.0, end: _avatarHover ? 1.04 : 1.0),
-              duration: const Duration(milliseconds: 220),
-              builder: (context, scale, child) => Transform.scale(
-                scale: scale,
-                child: child,
-              ),
-              child: RotationTransition(
-                turns: _ringCtrl,
-                child: Container(
-              width: size + 12,
-              height: size + 12,
-              padding: const EdgeInsets.all(6),
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(begin: 1.0, end: _avatarHover ? 1.04 : 1.0),
+            duration: const Duration(milliseconds: 220),
+            builder: (context, scale, child) => Transform.scale(
+              scale: scale,
+              child: child,
+            ),
+            child: Container(
+              width: size,
+              height: size,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF7C3AED), Color(0xFF06B6D4)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.12),
@@ -342,8 +322,6 @@ class _HeroSectionState extends State<HeroSection> with TickerProviderStateMixin
                       ),
                     ),
                   ],
-                ),
-              ),
                 ),
               ),
             ),
