@@ -1,0 +1,21 @@
+name: portfolio_flutter
+description: A minimal Flutter web portfolio template inspired by https://vishnupriyan-ss.firebaseapp.com/
+publish_to: "none"
+version: 0.0.1
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^5.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/abhisek_avatar.jpg
