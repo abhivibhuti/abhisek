@@ -2,61 +2,31 @@ import 'dart:html' as html;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const PortfolioApp());
 }
-
 // === Configure your public links here ===
 const String resumeUrl = 'https://drive.google.com/file/d/19_7cTTi3l85p2j6KWC5KUDfOsI9RdFzY/view';
 const String githubUrl = 'https://github.com/abhivibhuti/';
 const String linkedinUrl = 'https://www.linkedin.com/in/abhisek-vibhuti/';
 const String emailAddress = 'abhi_vibhuti@hotmail.com';
 // ========================================
-
 class PortfolioApp extends StatelessWidget {
   const PortfolioApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Portfolio',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: const Color(0xFF7C3AED),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7C3AED),
-          primary: const Color(0xFF7C3AED),
-          background: Colors.black,
-          brightness: Brightness.dark,
-        ),
-        scaffoldBackgroundColor: Colors.black,
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          elevation: 0,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF7C3AED),
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.white,
-            side: const BorderSide(color: Colors.white),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-        ),
+      title: 'Abhisek Vibhuti — Portfolio',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
       ),
       home: const PortfolioHome(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -69,14 +39,17 @@ class PortfolioHome extends StatefulWidget {
 }
 
 class _PortfolioHomeState extends State<PortfolioHome> {
+  bool _showAbout = false;
   bool _showProjects = false;
   bool _showContact = false;
-  bool _showAbout = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const Text('Abhisek Vibhuti | Portfolio'),
         actions: [
           TextButton.icon(
@@ -113,62 +86,56 @@ class _PortfolioHomeState extends State<PortfolioHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 24),
+            HeroSection(
+              onAbout: () => setState(() {
+                _showAbout = !_showAbout;
+                if (_showAbout) {
+                  _showProjects = false;
+                  _showContact = false;
+                }
+              }),
+              onProjects: () => setState(() {
+                _showProjects = true;
+                _showAbout = false;
+                _showContact = false;
+              }),
+            ),
+            const SizedBox(height: 20),
+            if (!_showAbout && !_showProjects && !_showContact) ...[
+              const SizedBox(height: 8),
+              const TechCloud(),
               const SizedBox(height: 24),
-              HeroSection(
-                onAbout: () => setState(() {
-                      _showAbout = !_showAbout;
-                      // hide other sections when showing About
-                      if (_showAbout) {
-                        _showProjects = false;
-                        _showContact = false;
-                      }
-                    }),
-                onProjects: () => setState(() {
-                      _showProjects = true;
-                      _showAbout = false;
-                      _showContact = false;
-                    }),
-              ),
-              const SizedBox(height: 20),
-              // Show tech/data cloud when nothing is selected
-              if (!_showAbout && !_showProjects && !_showContact) ...[
-                const SizedBox(height: 8),
-                const TechCloud(),
-                const SizedBox(height: 24),
-              ] else
-                const SizedBox.shrink(),
-              // About is hidden on initial load; revealed when user clicks About
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: const AboutSection(),
-                crossFadeState: _showAbout ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 400),
-              ),
-              const SizedBox(height: 24),
-              // Projects are hidden on initial load; revealed when user clicks Projects
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: const ProjectsSection(),
-                crossFadeState: _showProjects ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 400),
-              ),
-              const SizedBox(height: 40),
-              // Contact is hidden on initial load; revealed when user clicks Contact
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: const ContactSection(),
-                crossFadeState: _showContact ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 400),
-              ),
+            ] else
+              const SizedBox.shrink(),
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: const AboutSection(),
+              crossFadeState: _showAbout ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 400),
+            ),
+            const SizedBox(height: 24),
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: const ProjectsSection(),
+              crossFadeState: _showProjects ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 400),
+            ),
+            const SizedBox(height: 40),
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: const ContactSection(),
+              crossFadeState: _showContact ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 400),
+            ),
             const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
-
-  // (Removed unused helper _scrollToContact)
 }
+
 
 class HeroSection extends StatefulWidget {
   final VoidCallback? onAbout;
@@ -255,19 +222,19 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
               );
             }),
             const SizedBox(height: 14),
-            const Text(
+            Text(
               'Data Scientist · AI Architect · Gen AI Expert',
-              style: TextStyle(fontSize: 18, height: 1.4, color: Colors.white70),
+              style: const TextStyle(fontSize: 18, height: 1.4, color: Colors.white70),
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Strategic Data Leader | 22+ yrs in BI, AI/ML & Cloud Data Engineering | Driving business impact with Agentic AI & Generative AI | Delivered \$15M+ value via predictive analytics',
-              style: TextStyle(fontSize: 16, height: 1.4, color: Colors.white70),
+              style: const TextStyle(fontSize: 16, height: 1.4, color: Colors.white70),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Turning Data into Direction, Insights into Impact',
-              style: TextStyle(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400, color: Colors.white70, fontStyle: FontStyle.italic),
+              style: const TextStyle(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400, color: Colors.white70, fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 16),
             Wrap(
@@ -446,9 +413,9 @@ class ProjectCard extends StatelessWidget {
               const SizedBox(height: 8),
         Expanded(child: Text(project.description, style: const TextStyle(color: Colors.white70))),
               const SizedBox(height: 8),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+                children: const [
           Icon(Icons.open_in_new, size: 16, color: Colors.white70),
                 ],
               )
@@ -486,7 +453,7 @@ class _ContactSectionState extends State<ContactSection> {
   void _sendMail() {
     if (!_formKey.currentState!.validate()) return;
 
-    const to = emailAddress;
+    final to = emailAddress;
     final subject = Uri.encodeComponent(_subjectCtrl.text);
     final bodyText = 'Name: ${_nameCtrl.text}\nEmail: ${_emailCtrl.text}\n\n${_messageCtrl.text}';
     final body = Uri.encodeComponent(bodyText);
@@ -510,7 +477,7 @@ class _ContactSectionState extends State<ContactSection> {
           TextButton.icon(
             onPressed: () => html.window.open('mailto:$emailAddress', '_self'),
             icon: const Icon(Icons.email, color: Colors.white70),
-            label: const Text(emailAddress, style: TextStyle(color: Colors.white70)),
+            label: Text(emailAddress, style: const TextStyle(color: Colors.white70)),
           ),
           const SizedBox(height: 12),
           Form(
@@ -609,13 +576,13 @@ class AboutSection extends StatelessWidget {
               Text('About Me', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white)),
               const SizedBox(height: 14),
               // Lead bold summary (slightly larger, tighter line-height)
-              const Text(
+              Text(
                 'Dynamic and results-driven Sr. Manager – Data & Analytics / Data Science with 22+ years of experience delivering actionable insights, enterprise-scale analytics, and strategic guidance across multi-disciplinary teams.',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16, height: 1.34),
               ),
               const SizedBox(height: 16),
               // Proven expertise heading
-              const Text('Proven expertise in:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+              Text('Proven expertise in:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
               const SizedBox(height: 10),
               // Bulleted list
               Column(
@@ -631,38 +598,38 @@ class AboutSection extends StatelessWidget {
               const SizedBox(height: 18),
               // Paragraph emphasizing data science experience
               RichText(
-                text: const TextSpan(
-                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    TextSpan(text: 'In addition to analytics, I bring extensive hands-on experience in '),
-                    TextSpan(text: 'Data Science and AI/ML practices', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    TextSpan(text: ', having delivered impactful AI projects in predictive modeling, NLP, computer vision, and intelligent automation. My work includes building AI-powered solutions that improve forecasting accuracy, enhance operational efficiency, and unlock new revenue opportunities.'),
+                    const TextSpan(text: 'In addition to analytics, I bring extensive hands-on experience in '),
+                    TextSpan(text: 'Data Science and AI/ML practices', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    const TextSpan(text: ', having delivered impactful AI projects in predictive modeling, NLP, computer vision, and intelligent automation. My work includes building AI-powered solutions that improve forecasting accuracy, enhance operational efficiency, and unlock new revenue opportunities.'),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
               // Agentic AI and Generative AI paragraph
               RichText(
-                text: const TextSpan(
-                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    TextSpan(text: 'Recently, my focus has extended to '),
-                    TextSpan(text: 'Agentic AI systems', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    TextSpan(text: '—autonomous AI agents that optimize workflows and augment human decision-making—and '),
-                    TextSpan(text: 'Generative AI innovations', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    TextSpan(text: ', where I actively explore applications in text, image, and code generation to transform business processes and accelerate innovation.'),
+                    const TextSpan(text: 'Recently, my focus has extended to '),
+                    TextSpan(text: 'Agentic AI systems', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    const TextSpan(text: '—autonomous AI agents that optimize workflows and augment human decision-making—and '),
+                    TextSpan(text: 'Generative AI innovations', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    const TextSpan(text: ', where I actively explore applications in text, image, and code generation to transform business processes and accelerate innovation.'),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
               // Closing passionate line
               RichText(
-                text: const TextSpan(
-                  style: TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.white70, height: 1.6, fontSize: 15),
                   children: [
-                    TextSpan(text: 'I am passionate about '),
-                    TextSpan(text: 'bridging traditional analytics with advanced AI capabilities', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-                    TextSpan(text: ', continuously exploring how AI and GenAI can elevate user experience, streamline operations, and deliver measurable business impact.'),
+                    const TextSpan(text: 'I am passionate about '),
+                    TextSpan(text: 'bridging traditional analytics with advanced AI capabilities', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
+                    const TextSpan(text: ', continuously exploring how AI and GenAI can elevate user experience, streamline operations, and deliver measurable business impact.'),
                   ],
                 ),
               ),
@@ -684,30 +651,32 @@ class TechCloud extends StatefulWidget {
     'Data Lake', 'MS Dynamics', 'Azure', 'Angular', 'Big Data', 'Data Mining'
   ];
 
-  static const Map<String, IconData> _iconMap = {
-    'Power BI': Icons.analytics,
-    'MS Fabric': Icons.layers,
-    'SQL Server': Icons.storage,
-    'Synapse': Icons.device_hub,
-    'Snowflake': Icons.ac_unit,
-    'Jira': Icons.task,
-    'AI Models': Icons.memory,
-    'Python': Icons.code,
-    'PySpark': Icons.bolt,
-    'Power Apps': Icons.apps,
-    'Power Automate': Icons.sync,
-    'Excel': Icons.table_chart,
-    'Copilot Studio': Icons.assistant,
-    'Agentic AI': Icons.smart_toy,
-    'Generative AI': Icons.auto_fix_high,
-    'SAP': Icons.business,
-    'Data Lake': Icons.cloud,
-    'MS Dynamics': Icons.account_tree,
-    'Azure': Icons.cloud,
-    'Angular': Icons.developer_mode,
-    'Big Data': Icons.storage,
-    'Data Mining': Icons.search,
+  static const Map<String, String> _assetNameMap = {
+    'Power BI': 'powerbi.svg',
+    'MS Fabric': 'msfabric.svg',
+    'SQL Server': 'sqlserver.svg',
+    'Synapse': 'synapse.svg',
+    'Snowflake': 'snowflake.svg',
+    'Jira': 'jira.svg',
+    'AI Models': 'agenticai.svg',
+    'Python': 'python.svg',
+    'PySpark': 'pyspark.svg',
+    'Power Apps': 'powerapps.svg',
+    'Power Automate': 'powerautomate.svg',
+    'Excel': 'excel.svg',
+    'Copilot Studio': 'copilotstudio.svg',
+    'Agentic AI': 'agenticai.svg',
+    'Generative AI': 'generativeai.svg',
+    'SAP': 'sap.svg',
+    'Data Lake': 'datalake.svg',
+    'MS Dynamics': 'msdynamics.svg',
+    'Azure': 'azure.svg',
+    'Angular': 'angular.svg',
+    'Big Data': 'bigdata.svg',
+    'Data Mining': 'datamining.svg',
   };
+
+  // icons are provided via SVG assets in assets/tech/
 
   @override
   State<TechCloud> createState() => _TechCloudState();
@@ -718,6 +687,7 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
   final _positions = <Offset>[]; // pixel positions
   late final AnimationController _floatController;
   final GlobalKey _key = GlobalKey();
+  List<String> _missing = [];
 
   @override
   void initState() {
@@ -736,7 +706,7 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
   void _initializePositions() {
     final ctx = _key.currentContext;
     if (ctx == null) return;
-    final size = ctx.size ?? const Size(800, 320);
+    final size = ctx.size ?? Size(800, 320);
     final w = size.width;
     final h = size.height;
     _positions.clear();
@@ -745,14 +715,32 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
       final dy = 0.08 + _random.nextDouble() * 0.84;
       _positions.add(Offset(dx * w, dy * h));
     }
-    // run a few relaxation iterations to reduce overlap
-    _relaxPositions(w, h, iterations: 60);
+  // run a few relaxation iterations to reduce overlap
+  _relaxPositions(w, h);
+    // run preflight asset check
+    _checkAssets();
+  }
+
+  Future<void> _checkAssets() async {
+    final missing = <String>[];
+    for (var label in TechCloud._techs) {
+  final file = 'assets/tech/${TechCloud._assetNameMap[label] ?? label.toLowerCase().replaceAll(' ', '') + '.svg'}';
+      try {
+        final data = await rootBundle.loadString(file);
+        if (data.trim().isEmpty) missing.add(file);
+      } catch (_) {
+        missing.add(file);
+      }
+    }
+    setState(() {
+      _missing = missing;
+    });
   }
 
   void _relaxPositions(double w, double h, {int iterations = 40}) {
     final n = _positions.length;
-    const minDist = 70.0; // desired min pixel distance
-    for (var it = 0; it < iterations; it++) {
+  final minDist = 82.0; // desired min pixel distance (increased to reduce overlap)
+  for (var it = 0; it < iterations; it++) {
       final forces = List.generate(n, (_) => Offset.zero);
       for (var i = 0; i < n; i++) {
         for (var j = i + 1; j < n; j++) {
@@ -769,11 +757,11 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
       }
       // apply forces and keep within bounds
       for (var i = 0; i < n; i++) {
-        var p = _positions[i] + forces[i] * 0.08; // step
+        var p = _positions[i] + forces[i] * 0.1; // step (slightly larger)
         p = Offset(p.dx.clamp(8.0, w - 8.0), p.dy.clamp(8.0, h - 8.0));
         // slight pull to center
         final center = Offset(w / 2, h / 2);
-        p = Offset(p.dx + (center.dx - p.dx) * 0.003, p.dy + (center.dy - p.dy) * 0.003);
+  p = Offset(p.dx + (center.dx - p.dx) * 0.0035, p.dy + (center.dy - p.dy) * 0.0035);
         _positions[i] = p;
       }
     }
@@ -782,28 +770,58 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    const height = 320.0;
+    final height = 320.0;
+
     return SizedBox(
       width: double.infinity,
       height: height,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1000),
-          child: SizedBox(
-            key: _key,
-            height: height,
-            child: Stack(
-              children: List.generate(TechCloud._techs.length, (i) {
-                final label = TechCloud._techs[i];
-                final icon = TechCloud._iconMap[label] ?? Icons.build;
-                final pos = i < _positions.length ? _positions[i] : Offset(50.0 + i * 20, 50.0 + i * 8);
-                return Positioned(
-                  left: pos.dx,
-                  top: pos.dy,
-                  child: TechNodeWidget(label: label, icon: icon, index: i, float: _floatController),
-                );
-              }),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 8),
+
+              // Cloud area — fill remaining vertical space
+              Expanded(
+                child: Container(
+                  key: _key,
+                  child: Stack(
+                    children: List.generate(TechCloud._techs.length, (i) {
+                      final label = TechCloud._techs[i];
+                      final assetName = 'assets/tech/${TechCloud._assetNameMap[label] ?? label.toLowerCase().replaceAll(' ', '') + '.svg'}';
+                      final pos = i < _positions.length ? _positions[i] : Offset(50.0 + i * 20, 50.0 + i * 8);
+                      return Positioned(
+                        left: pos.dx,
+                        top: pos.dy,
+                        child: TechNodeWidget(label: label, assetName: assetName, index: i, float: _floatController),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+
+              // show missing assets if any
+              if (_missing.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: Colors.red.withOpacity(0.06), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.red.withOpacity(0.18))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Missing assets detected:', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 8),
+                        for (var m in _missing) Text(m, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
       ),
@@ -813,10 +831,10 @@ class _TechCloudState extends State<TechCloud> with SingleTickerProviderStateMix
 
 class TechNodeWidget extends StatefulWidget {
   final String label;
-  final IconData icon;
+  final String assetName;
   final int index;
   final AnimationController float;
-  const TechNodeWidget({required this.label, required this.icon, required this.index, required this.float, super.key});
+  const TechNodeWidget({super.key, required this.label, required this.assetName, required this.index, required this.float});
 
   @override
   State<TechNodeWidget> createState() => _TechNodeWidgetState();
@@ -831,7 +849,7 @@ class _TechNodeWidgetState extends State<TechNodeWidget> {
     final phase = (widget.index % 5) + 1;
     final dx = math.sin(2 * math.pi * (t * phase)) * 6.0;
     final dy = math.cos(2 * math.pi * (t * (phase + 0.7))) * 4.0;
-    final scale = _hover ? 1.14 : 1.0;
+    final scale = _hover ? 1.18 : 1.0; // slightly larger hover scale
     return MouseRegion(
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
@@ -847,11 +865,33 @@ class _TechNodeWidgetState extends State<TechNodeWidget> {
               color: Colors.white10,
               borderRadius: BorderRadius.circular(999),
               border: Border.all(color: Colors.white12),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.45), blurRadius: 8, offset: const Offset(0, 3)),
+              ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(widget.icon, size: 16, color: Colors.white70),
+                // try to load an SVG asset for the tech logo, fall back to a generic icon
+                SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: Builder(builder: (ctx) {
+                    try {
+                      return SvgPicture.asset(
+                        widget.assetName,
+                        width: 22,
+                        height: 22,
+                        fit: BoxFit.contain,
+                        semanticsLabel: widget.label,
+                        placeholderBuilder: (ctx) => const Icon(Icons.bubble_chart, size: 16, color: Colors.white70),
+                                                 // colorFilter removed as monochrome handling is dropped
+                      );
+                    } catch (_) {
+                      return const Icon(Icons.bubble_chart, size: 16, color: Colors.white70);
+                    }
+                  }),
+                ),
                 const SizedBox(width: 8),
                 Text(widget.label, style: const TextStyle(color: Colors.white70, fontSize: 13)),
               ],
